@@ -14,6 +14,7 @@ def do_count(shared):
         if shared.counter >= shared.end:
             break
         shared.elms[shared.counter] += 1
+        shared.counter += 1
 
 
 shared = Shared(1_000_000)
