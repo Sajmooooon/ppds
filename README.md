@@ -1,7 +1,10 @@
 # PPDS 01
+
 First assignment from the PPDS course.
 
-##Description
+
+## Description
+
 In this project, we address the problem using 2 threads, 
 that have a shared field and a shared field index. The index is incrementally increased, 
 until it exceeds the length of the field. Finally, it is counted how many elements of the field have the given value.
