@@ -1,5 +1,5 @@
 from collections import Counter
-from fei.ppds import Thread
+from fei.ppds import Thread, Mutex
 
 
 class Shared:
@@ -10,12 +10,16 @@ class Shared:
 
 
 def do_count(shared):
+    mutex.lock()
     while True:
         if shared.counter >= shared.end:
             break
         shared.elms[shared.counter] += 1
         shared.counter += 1
+    mutex.unlock()
 
+
+mutex = Mutex()
 
 shared = Shared(1_000_000)
 t1 = Thread(do_count, shared)
