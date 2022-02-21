@@ -27,18 +27,19 @@ Implementation 1 is located in the var1 folder and implementation 2 in var2 fold
 ### Implementation 1
 
 In the first implementation, we used a lock in the ``do_count(shared)`` function, 
-where we locked the entire while loop and then unlocked it. Thus, it was only done on 1 thread because the other thread waited for the first one to finish and when it finished
-the shared counter value already had the same value as the length of the field and thus the second thread
-was terminated on the condition in the loop.
+where we locked the entire while loop and then unlocked it. 
+Thus, it is only executed on 1 thread, because the second one waits for the first one to finish and when it finishes
+the shared counter value already has the same value as the length of the array and thus the second thread
+is terminated on the condition in the loop.
 
 
 ### Implementation 2
 
 In the second implementation, we placed the lock inside the while loop, with the execution
-threads alternated. The first thread locked the inside of the while loop, while the second thread 
-waited, the first one checked the condition, and if it was not met, it executed the next instructions and 
-finally unlocked.Then in the second thread it was the same and this was repeated with the threads, 
-until the condition was met and then the unlock would occur to avoid deadlock and end the loop.
+threads alternated. The first thread locks the inside of the while loop, while the second thread 
+waits, the first one checks the condition, and if it is not met, it executes the next instructions and 
+finally unlocks. Then in the second thread it does the same and repeats this with the threads,
+until the condition is met and then the unlock would occur to avoid deadlock and end the loop.
 
 
 
