@@ -3,13 +3,33 @@ from fei.ppds import Thread, Mutex
 
 
 class Shared:
+    """This is a shared class for multiple threads"""
+
     def __init__(self, size):
+        """
+        The constructor for Shared class.
+
+        Parameter:
+        size (int): The size of array.
+        """
+
         self.counter = 0
         self.end = size
         self.elms = [0] * size
 
 
 def do_count(shared):
+    """
+    This function is used by threads and while loop shared array.
+
+    Increments the value of counter
+    and shared array element at position counter.
+    Until counter exceeds the length of the array.
+
+    Parameter:
+    shared: The shared object.
+    """
+
     mutex.lock()
     while True:
         if shared.counter >= shared.end:
