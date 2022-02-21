@@ -21,7 +21,7 @@ We used python with version 3.8.0 to perform the implementation.
 
 We made 2 implementations, where each time We placed a lock in a different part of the code. 
 The implementations are numbered from 1-2 and are in separate folders. 
-Implementation 1 is located in the var1 folder and implementation 2 in var2 folder.
+Implementation 1 is located in the [var1](https://github.com/Sajmooooon/ppds/tree/01/var1) folder and implementation 2 in [var2](https://github.com/Sajmooooon/ppds/tree/01/var2) folder.
 
 We tested both implementations with array sizes of 1000 to 1000000. Implementation 1 worked without problems,
 but in implementation 2 we had a problem, as we had a condition defined in the while at the beginning and not in the loop body.
