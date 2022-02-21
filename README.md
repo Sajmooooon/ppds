@@ -23,6 +23,13 @@ We made 2 implementations, where each time We placed a lock in a different part 
 The implementations are numbered from 1-2 and are in separate folders. 
 Implementation 1 is located in the var1 folder and implementation 2 in var2 folder.
 
+We tested both implementations with array sizes of 1000 to 1000000. Implementation 1 worked without problems,
+but in implementation 2 we had a problem, as we had a condition defined in the while at the beginning and not in the loop body.
+Thus, even when the while loop's interior was locked in one thread, the second thread passed the condition and then, 
+when one thread incremented the counter value and that value was already the same as the size of the array, then 
+after unlocking, the waiting thread was able to execute the inside of the loop. Therefore, we modified the code to make the inside
+while loop to check the condition first, and thus we avoided this problem.
+
 
 ### Implementation 1
 
