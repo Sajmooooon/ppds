@@ -7,7 +7,7 @@ In this assignment, we were concerned with solving 3 problems using a semaphore 
 In the first problem we created a simple barrier.
 In the second problem we solved a reusable barrier and in the third problem we solved a fibonacci.
 The implementation of the simple barrier is located at [simple barrier](https://github.com/Sajmooooon/ppds/tree/02/simpleBarrier) with the reusable barrier located at [reusable barrier](https://github.com/Sajmooooon/ppds/tree/02/barrier)
-folder and the fibonacci implementation is located in the fibonacci folder.
+folder and the fibonacci implementation is located in the [fibonacci](https://github.com/Sajmooooon/ppds/tree/02/fibonacci) folder.
 
 
 ## ADT Simple Barrier
@@ -40,3 +40,10 @@ but in this case using ``event.set()`` and resetting the counter.
 Next, as in the previous example, the thread is unlocked and waits for the other threads to catch up if the condition has been met,
 then all waiting threads are released.
 
+
+## Fibonacci 
+In this problem we created N threads, each thread represented a node in which the element was counted
+at position i+2, where the first 2 elements 0 and 1 we specified at the beginning. The Fibonacci computation itself worked
+even without using Semaphore and Event, so we added ``sleep()`` with a random value to be able to test our solution to see if it was correct.
+It was necessary for a particular thread to calculate its corresponding Fibonacci number and then save the results 
+into the thread list.
