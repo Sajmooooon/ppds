@@ -1,16 +1,35 @@
+"""
+Authors: Bc. Simon Youssef
+         Mgr. Ing. Matúš Jókay, PhD.
+Coppyright 2022 All Rights Reserved.
+
+Basic example of Fibonacci sequence with Semaphore.
+"""
+
 from random import randint
 from time import sleep
 from fei.ppds import Thread, Semaphore, Mutex, print
 
 
 class Fib:
+    """The Fib class."""
+
     def __init__(self, count):
+        """
+        The constructor for Fib class.
+
+        Parameter:
+            count (int): The number of threads.
+        """
+
         self.count = count
         self.counter = 0
         self.mutex = Mutex()
         self.semaphore = Semaphore(0)
 
     def wait(self):
+        """"The Fib function with Semaphore."""
+
         self.mutex.lock()
         self.counter += 1
         if self.counter == self.count:
@@ -21,6 +40,8 @@ class Fib:
 
 
 def compute_fibonacci(fib, i):
+    """The function calculates the Fibonacci sequence"""
+
     sleep((randint(1, 10)/10))
     fib.wait()
     fib_seq[i+2] = fib_seq[i] + fib_seq[i+1]
