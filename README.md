@@ -18,3 +18,25 @@ checks that its value is the same as the thread count. If so, the counter is res
 all threads are released, the thread is unlocked, and finally the thread is waited for to catch up if the condition has been met,
 then all waiting threads are released.
 
+
+## Reusable Barrier
+In this task we dealt with a reusable barrier. At the beginning we implemented the SimpleBarrier class and 
+in it we defined the wait function.
+In the first example in the ``semaphore.py`` script, we used the same function as in the ``Simple Barrier`` section.
+Unlike the Simple Barrier implementation, here we have used 2 barriers that alternate 
+in an infinite loop.
+
+In the second example in the ``event.py`` script, we used Event instead of Semaphore. In this example in the function 
+``wait()``
+we first used ``event.clear()`` which makes sure that the event is cleared so that it can be used again. 
+In the initial implementation, we placed ``event.clear()`` at the end of the ``wait()`` function, which caused
+if we added ``sleep()`` between ``mutex.unlock()`` and ``event.wait()``, the last thread, 
+that met the condition would come later on ``event.wait()`` 
+and those threads that were waiting on ``event.wait()``
+would have executed ``event.clear()`` and the last thread would thus be stuck on ``event.wait()``.
+Further, as in the previous example, if the condition that the counter has the same value as the number of threads is met, 
+then all pending threads will be released,
+but in this case using ``event.set()`` and resetting the counter. 
+Next, as in the previous example, the thread is unlocked and waits for the other threads to catch up if the condition has been met,
+then all waiting threads are released.
+
