@@ -1,16 +1,35 @@
+"""
+Authors: Bc. Simon Youssef
+         Mgr. Ing. Matúš Jókay, PhD.
+Coppyright 2022 All Rights Reserved.
+
+Basic example of synchronization pattern Semaphore.
+"""
+
 from random import randint
 from time import sleep
 from fei.ppds import Thread, Semaphore, Mutex, print
 
 
 class SimpleBarrier:
+    """The SimpleBarrier class."""
+
     def __init__(self, count):
+        """
+            The constructor for SimpleBarrier class.
+
+            Parameter:
+                count (int): The number of threads.
+            """
+
         self.count = count
         self.counter = 0
         self.mutex = Mutex()
         self.semaphore = Semaphore(0)
 
     def wait(self):
+        """"The SimpleBarrier function with Semaphore."""
+
         self.mutex.lock()
         self.counter += 1
         if self.counter == self.count:
@@ -21,6 +40,15 @@ class SimpleBarrier:
 
 
 def barrier_cycle(b1, b2, thread_id):
+    """"
+    The function while loop 2 barriers in endless loop.
+
+    Parameters:
+        b1 (obj): First SimpleBarrier object.
+        b2 (obj): Second SimpleBarrier object.
+        thread_id (int): The id of thread.
+    """
+
     while True:
         before_barrier(thread_id)
         b1.wait()
@@ -29,11 +57,25 @@ def barrier_cycle(b1, b2, thread_id):
 
 
 def before_barrier(thread_id):
+    """"
+    The function print thread id for thread before barrier.
+
+    Parameter:
+        thread_id (int): The id of thread.
+    """
+
     sleep(randint(1, 10) / 10)
     print(f"before barrier {thread_id}")
 
 
 def after_barrier(thread_id):
+    """"
+    The function print thread id for thread after barrier.
+
+    Parameter:
+        thread_id (int): The id of thread.
+    """
+
     print(f"after barrier {thread_id}")
     sleep(randint(1, 10) / 10)
 
