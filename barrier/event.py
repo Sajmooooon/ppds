@@ -30,6 +30,7 @@ class SimpleBarrier:
     def wait(self):
         """"The SimpleBarrier function with Event."""
 
+        self.event.clear()
         self.mutex.lock()
         self.counter += 1
         if self.counter == self.count:
@@ -37,7 +38,6 @@ class SimpleBarrier:
             self.event.set()
         self.mutex.unlock()
         self.event.wait()
-        self.event.clear()
 
 
 def barrier_cycle(b1, b2, thread_id):
