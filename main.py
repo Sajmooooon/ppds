@@ -89,7 +89,7 @@ def grid_search():
                 items = s.counter / time
                 sum_item += items
 
-            avr_items = sum_item / 10
+            avr_items = sum_item / 0.05
             output.append((time, count_consumers, avr_items))
     return output
 
