@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from random import randint
 from time import sleep
 from fei.ppds import Mutex, Semaphore, Thread, print
@@ -42,7 +43,7 @@ def grid_search():
         for count_consumers in range(1, 11):
             sum_item = 0
             for i in range(10):
-                s = Shared(100)
+                s = Shared(10)
                 time = (produce_time + 1) / 250
                 c = [Thread(consumer, s) for _ in range(count_consumers)]
                 p = [Thread(producer, s, time) for _ in range(10)]
@@ -62,8 +63,23 @@ def grid_search():
     return output
 
 
+def show(output):
+    plt.figure()
+    ax = plt.axes(projection='3d')
+    ax.set_xlabel('Production time')
+    ax.set_ylabel('Number of consumers')
+    ax.set_zlabel('Number of products')
+    x = [time[0] for time in output]
+    y = [consumer[1] for consumer in output]
+    z = [size[2] for size in output]
+    ax.plot_trisurf(x, y, z, cmap='plasma', edgecolor='none')
+    ax.set_title('Number of products produced per unit time')
+    plt.show()
+
+
 def main():
     output = grid_search()
+    show(output)
 
 
 main()
