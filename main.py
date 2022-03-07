@@ -86,10 +86,10 @@ def grid_search():
                 s.free.signal(100)
                 [t.join() for t in c + p]
                 print(f"main thread {i}: end of program")
-                items = s.counter / time
+                items = s.counter / 0.05
                 sum_item += items
 
-            avr_items = sum_item / 0.05
+            avr_items = sum_item / 10
             output.append((time, count_consumers, avr_items))
     return output
 
