@@ -110,7 +110,7 @@ def show(output):
     y = [consumer[1] for consumer in output]
     z = [size[2] for size in output]
     ax.plot_trisurf(x, y, z, cmap='plasma', edgecolor='none')
-    ax.set_title('Number of products produced per per second')
+    ax.set_title('Number of products produced per second')
     plt.show()
 
 
