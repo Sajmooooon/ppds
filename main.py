@@ -2,7 +2,6 @@
 Authors: Bc. Simon Youssef
          Mgr. Ing. Matúš Jókay, PhD.
 Coppyright 2022 All Rights Reserved.
-
 Implementation of the Consumer-Producer problem.
 """
 
@@ -18,7 +17,6 @@ class Shared(object):
     def __init__(self, count):
         """
         The constructor for Shared class.
-
         Parameter:
         count (int): The size of warehouse.
         """
@@ -33,7 +31,6 @@ class Shared(object):
 def producer(shared, time):
     """
     The function of producer.
-
     Parameters:
         shared (object): The shared object.
         time (float): The time of item production.
@@ -54,7 +51,6 @@ def producer(shared, time):
 def consumer(shared):
     """
     The function for consumer.
-
     Parameters:
         shared (object): The shared object.
     """
@@ -66,6 +62,7 @@ def consumer(shared):
         shared.mutex.lock()
         sleep(randint(1, 10) / 400)
         shared.mutex.unlock()
+        shared.free.signal(1)
         sleep(randint(1, 10) / 250)
 
 
@@ -100,7 +97,6 @@ def grid_search():
 def show(output):
     """
     The function to show figure.
-
     Parameters:
         output (list): The list of data from grid search.
     """
@@ -109,12 +105,12 @@ def show(output):
     ax = plt.axes(projection='3d')
     ax.set_xlabel('Production time')
     ax.set_ylabel('Number of consumers')
-    ax.set_zlabel('Number of products')
+    ax.set_zlabel('Number of products per second')
     x = [time[0] for time in output]
     y = [consumer[1] for consumer in output]
     z = [size[2] for size in output]
     ax.plot_trisurf(x, y, z, cmap='plasma', edgecolor='none')
-    ax.set_title('Number of products produced per unit time')
+    ax.set_title('Number of products produced per per second')
     plt.show()
 
 
