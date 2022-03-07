@@ -1,3 +1,11 @@
+"""
+Authors: Bc. Simon Youssef
+         Mgr. Ing. Matúš Jókay, PhD.
+Coppyright 2022 All Rights Reserved.
+
+Implementation of the Consumer-Producer problem.
+"""
+
 import matplotlib.pyplot as plt
 from random import randint
 from time import sleep
@@ -5,7 +13,16 @@ from fei.ppds import Mutex, Semaphore, Thread, print
 
 
 class Shared(object):
+    """This is a shared class for multiple threads"""
+
     def __init__(self, count):
+        """
+        The constructor for Shared class.
+
+        Parameter:
+        count (int): The size of warehouse.
+        """
+
         self.finished = False
         self.mutex = Mutex()
         self.free = Semaphore(count)
@@ -14,6 +31,14 @@ class Shared(object):
 
 
 def producer(shared, time):
+    """
+    The function of producer.
+
+    Parameters:
+        shared (object): The shared object.
+        time (float): The time of item production.
+    """
+
     while True:
         sleep(time)
         shared.free.wait()
@@ -27,6 +52,13 @@ def producer(shared, time):
 
 
 def consumer(shared):
+    """
+    The function for consumer.
+
+    Parameters:
+        shared (object): The shared object.
+    """
+
     while True:
         shared.items.wait()
         if shared.finished:
@@ -38,6 +70,8 @@ def consumer(shared):
 
 
 def grid_search():
+    """The function for grid search."""
+
     output = []
     for produce_time in range(10):
         for count_consumers in range(1, 11):
@@ -64,6 +98,13 @@ def grid_search():
 
 
 def show(output):
+    """
+    The function to show figure.
+
+    Parameters:
+        output (list): The list of data from grid search.
+    """
+
     plt.figure()
     ax = plt.axes(projection='3d')
     ax.set_xlabel('Production time')
@@ -77,9 +118,5 @@ def show(output):
     plt.show()
 
 
-def main():
-    output = grid_search()
-    show(output)
-
-
-main()
+output = grid_search()
+show(output)
