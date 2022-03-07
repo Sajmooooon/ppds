@@ -3,32 +3,13 @@ from time import sleep
 from fei.ppds import Mutex, Semaphore, Thread, print
 
 
-class LightSwitch(object):
-    def __init__(self):
-        self.cnt = 0
-        self.mutex = Mutex()
-
-    def lock(self, sem):
-        self.mutex.lock()
-        if not sem.cnt:
-            sem.wait()
-        self.cnt += 1
-        self.mutex.unlock()
-
-    def unlock(self, sem):
-        self.mutex.lock()
-        self.cnt -= 1
-        if not sem.cnt:
-            sem.signal()
-        self.mutex.unlock()
-
-
 class Shared(object):
     def __init__(self, count):
         self.finished = False
         self.mutex = Mutex()
         self.free = Semaphore(count)
         self.items = Semaphore(0)
+        self.counter = 0
 
 
 def producer(shared):
