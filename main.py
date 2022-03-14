@@ -53,9 +53,9 @@ def monitor(monitor_id, valid_data_0,  valid_data_1, valid_data_2, turnstile,
         turnstile.wait()
         number_reading_monitors = ls_monitor.lock(access_data)
         turnstile.signal()
-        print(f'monitor "{monitor_id}": '
-              f' number_reading_monitors={number_reading_monitors}' 
-              f' read_duration = {read_duration}\n')
+        print(f'monitor "{monitor_id:02d}": '
+              f' number_reading_monitors={number_reading_monitors:02d}' 
+              f' read_duration = {read_duration:5.3f}\n')
         ls_monitor.unlock(access_data)
 
 
@@ -70,9 +70,9 @@ def sensor(sensor_id, turnstile, ls_sensor, valid_data_0,  valid_data_1,
             record_duration = randint(20, 25) / 1000
         else:
             record_duration = randint(10, 20) / 1000
-        print(f'sensor "{sensor_id}":'
-              f' number_recording_sensors={number_recording_sensors},'
-              f' record_duration={record_duration}\n')
+        print(f'sensor "{sensor_id:02d}":'
+              f' number_recording_sensors={number_recording_sensors:02d},'
+              f' record_duration={record_duration:5.3f}\n')
         sleep(record_duration)
         if sensor_id == 0:
             valid_data_0.signal()
