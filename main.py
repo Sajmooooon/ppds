@@ -1,14 +1,32 @@
+"""
+Authors: Bc. Simon Youssef
+         Mgr. Ing. Matúš Jókay, PhD.
+Coppyright 2022 All Rights Reserved.
+Implementation of the Nuclear Power Plant.
+"""
+
 from random import randint
 from time import sleep
 from fei.ppds import Mutex, Semaphore, Thread, Event, print
 
 
 class Lightswitch:
+    """This is a Lightswitch class."""
+
     def __init__(self):
+        """The constructor for Lightswitch class."""
+
         self.counter = 0
         self.mutex = Mutex()
 
     def lock(self, sem):
+        """
+        The lock function of Lightswitch class.
+
+        Parameter:
+            sem (object): The semaphore to lock.
+        """
+
         self.mutex.lock()
         counter = self.counter
         self.counter += 1
@@ -18,6 +36,13 @@ class Lightswitch:
         return counter
 
     def unlock(self, sem):
+        """
+        The unlock function of Lightswitch class.
+
+        Parameter:
+            sem (object): The semaphore to unlock.
+        """
+
         self.mutex.lock()
         self.counter -= 1
         if self.counter == 0:
@@ -26,6 +51,8 @@ class Lightswitch:
 
 
 def init():
+    """This function is for program initialization nuclear power plant."""
+
     access_data = Semaphore(1)
     turnstile = Semaphore(1)
     ls_monitor = Lightswitch()
@@ -44,6 +71,19 @@ def init():
 
 def monitor(monitor_id, valid_data_0,  valid_data_1, valid_data_2, turnstile,
             ls_monitor, access_data):
+    """
+    This function simulates a monitor reading in a power plant.
+
+    Parameters:
+         monitor_id (int): The ID of monitor.
+         valid_data_0 (object): The Event that waits for signal from sensor.
+         valid_data_1 (object): The Event that waits for signal from sensor.
+         valid_data_2 (object): The Event that waits for signal from sensor.
+         turnstile (object): The Semaphore to block sensors.
+         ls_monitor (object): The Lightswitch to get data and release.
+         access_data (object): The Semaphore that simulates access data.
+    """
+
     valid_data_0.wait()
     valid_data_1.wait()
     valid_data_2.wait()
@@ -61,6 +101,21 @@ def monitor(monitor_id, valid_data_0,  valid_data_1, valid_data_2, turnstile,
 
 def sensor(sensor_id, turnstile, ls_sensor, valid_data_0,  valid_data_1,
            valid_data_2, access_data):
+    """
+    This function simulates the update of measured data by sensors.
+
+    Parameters:
+         sensor_id (int): The ID of sensor.
+         turnstile (object): The Semaphore to block sensors when is locked
+         by monitor.
+         ls_sensor (object): The Lightswitch to get access to storage and
+         release.
+         valid_data_0 (object): The Event that signals to the monitor.
+         valid_data_1 (object): The Event that signals to the monitor.
+         valid_data_2 (object): The Event that signals to the monitor.
+         access_data (object): The Semaphore that simulates access data.
+    """
+
     while True:
         sleep(randint(50, 60) / 1000)
         turnstile.wait()
