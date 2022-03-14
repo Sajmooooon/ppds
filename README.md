@@ -27,7 +27,7 @@ which is simulated by waiting, but in this case if it is sensor P and T (i.e. se
 10-20 ms and if it is sensor H (i.e. sensor with id 2), it takes 20-25 ms. To simulate the data update
 we used the output as specified in the assignment. Subsequently, after the data is successfully written, it signals that it is valid, but in this case,
 each sensor signals separately based on its id, allowing the monitors to start only after all sensors have written valid 
-data. Eventually, it will go away from the repository via the lightswitch unlock funckie and reduce the number of sensors currently enrolling.
+data. Eventually, it will go away from the repository via the lightswitch unlock function and reduce the number of sensors currently enrolling.
 
 # Pseudocode
 
