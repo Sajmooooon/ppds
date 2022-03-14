@@ -29,3 +29,64 @@ we used the output as specified in the assignment. Subsequently, after the data 
 each sensor signals separately based on its id, allowing the monitors to start only after all sensors have written valid 
 data. Eventually, it will go away from the repository via the lightswitch unlock funckie and reduce the number of sensors currently enrolling.
 
+# Pseudocode
+
+```
+FUNCTION init()
+    access_data = Semaphore(1)
+    turnstile = Semaphore(1)
+    ls_monitor = Lightswitch()
+    ls_sensor = Lightswitch()
+    valid_data_0 = Event()
+    valid_data_1 = Event()
+    valid_data_2 = Event()
+
+    FOR monitor_id = 0 to 7
+        Thread(monitor, monitor_id)
+    ENDFOR
+
+    FOR sensor_id = 0 to 2
+        Thread(sensor, sensor_id)
+    ENDFOR
+ENDFUNCTION
+
+FUNCTION monitor(monitor_id)
+    valid_data_0.wait()
+    valid_data_1.wait()
+    valid_data_2.wait()
+    WHILE True:
+        read_duration = rand(40 to 50 ms)
+        sleep(read_duration)
+        turnstile.wait()
+        number_reading_monitors = ls_monitor.lock(access_data)
+        turnstile.signal()
+        PRINT ('monitor "%02d": number_reading_monitors=%02d read_duration=%03d\n')
+        ls_monitor.unlock(access_data)
+    ENDWHILE
+ENDFUNCTION
+
+FUNCTION sensor(sensor_id):
+    WHILE True:
+        sleep(50 to 60 ms)
+        turnstile.wait()
+        turnstile.signal()
+        number_recording_sensors = ls_sensor.lock(access_data)
+        IF sensor_id is equal 2
+            record_duration = rand(20 to 25 ms)
+        ELSE
+            record_duration = rand(10 to 20 ms)
+        ENDIF
+        PRINT ('sensor "%02d": number_recording_sensors=%02d record_duration=%03d\n')
+        sleep(record_duration)
+        IF sensor_id is equal 0
+            valid_data_0.signal()
+        ELSE IF sensor_id is equal 1
+            valid_data_1.signal()
+        ELSE
+            valid_data_2.signal()
+        ENDIF
+        ls_sensor.unlock(access_data)
+    ENDWHILE
+ENDFUNCTION
+
+```
