@@ -25,3 +25,84 @@ The cooks' solution runs in an infinite while cycle, then waits using Semaphore 
 savage when the pot is empty. Then when they get the signal they wait for each other, we provided this using
 2 simple barriers as with the savages, and then they each cook some part of the meal, which is simulated by sleep(). When everyone has finished cooking,
 the number of portions is incremented and the last cook, then signals savage with the Semaphore that it's done.
+
+# Pseudocode
+```
+FUNCTION init(servings):
+    servings = servings
+    count = 0
+    mutex = Mutex()
+    cmutext = Mutex()
+    empty_pot = Semaphore(0)
+    full_pot = Semaphore(0)
+
+    b1 = SimpleBarrier(number_savages)
+    b2 = SimpleBarrier(number_savages)
+    c1 = SimpleBarrier(number_cooks)
+    c2 = SimpleBarrier(number_cooks)
+ENDFUNCTION
+
+
+FUNCTION eat(savage_id):
+    PRINT('savage %2d: eating',savage_id)
+    sleep(0.5 to 2 s)
+ENDFUNCTION
+
+
+FUNCTION savage(savage_id):
+    sleep(0.01 to 1 s)
+    WHILE True:
+        b1.wait()
+        b2.wait('savage %2d: before dinner',
+                'savage %2d: we are all',savage_id)
+        mutex.lock()
+        PRINT('savage %2d: number of remaining portions %2d',savage_id,servings)
+        IF servings is equal 0:
+            PRINT('savage %2d: wake the cook',savage_id)
+            empty_pot.signal(number_cooks)
+            full_pot.wait()
+        ENDIF
+        PRINT('savage %2d: taking from pot',savage_id)
+        servings = servings - 1
+        mutex.unlock()
+        eat(savage_id)
+    ENDWHILE
+ENDFUNCTION
+
+
+FUNCTION cook(cook_id):
+    WHILE True:
+        empty_pot.wait()
+        c1.wait()
+        c2.wait()
+        cmutext.lock()
+        count = shared.coks + 1
+        PRINT('cook %2d: cooking',cook_id)
+        sleep(0.5 to 2 s)
+        IF count is equal cooks:
+            count = 0
+            PRINT('cook %2d: servings -> pot',cook_id)
+            servings = servings + number_servings
+            full_pot.signal()
+        ENDIF
+        cmutext.unlock()
+    ENDWHILE
+ENDFUNCTION
+
+
+FUNCTION main():
+    shared = Shared(0)
+    threads = []
+    FOR savage_id=0 to number_savages-1:
+        savages.append(Thread(savage, savage_id, shared))
+    ENDFOR
+
+    FOR cook_id=0 to number_cooks-1:
+        savages.append(Thread(cook, cook_id, shared))
+    ENDFOR
+
+    FOR t=0 to threads.length-1:
+        t.join()
+    ENDFOR
+ENDFUNCTION
+```
