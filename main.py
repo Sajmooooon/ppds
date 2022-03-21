@@ -27,12 +27,17 @@ class SimpleBarrier(object):
 class Shared(object):
     def __init__(self, m):
         self.servings = m
+        self.count = 0
         self.mutex = Mutex()
+        self.cmutext = Mutex()
         self.empty_pot = Semaphore(0)
         self.full_pot = Semaphore(0)
 
         self.b1 = SimpleBarrier(N)
         self.b2 = SimpleBarrier(N)
+
+        self.c1 = SimpleBarrier(cooks)
+        self.c2 = SimpleBarrier(cooks)
 
 
 def eat(i):
@@ -50,7 +55,7 @@ def savage(i, shared):
         print(f'🐗 savage {i}: number of remaining portions {shared.servings}')
         if shared.servings == 0:
             print(f'🐗 savage {i}: wake the cook')
-            shared.empty_pot.signal()
+            shared.empty_pot.signal(cooks)
             shared.full_pot.wait()
         print(f'🐗 savage {i}: taking from pot')
         shared.servings -= 1
@@ -58,23 +63,35 @@ def savage(i, shared):
         eat(i)
 
 
-def cook(shared):
+def cook(i, shared):
     while True:
+        shared.c1.wait()
+        shared.c2.wait()
         shared.empty_pot.wait()
-        print('‍🍳 cook: cooking')
-        sleep(randint(50, 200)/100)
-        shared.servings += M
-        shared.full_pot.signal()
+        shared.cmutext.lock()
+        shared.count += 1
+        print(f'‍🍳 cook {i}: cooking')
+        if shared.count == cooks:
+            sleep(randint(50, 200) / 100)
+            shared.count = 0
+            print(f'🍳 cook {i}: servings -> pot')
+            shared.servings += M
+            shared.full_pot.signal()
+        shared.cmutext.unlock()
 
 
 def main():
     shared = Shared(0)
-    savages = []
+    threads = []
     for i in range(N):
-        savages.append(Thread(savage, i, shared))
-    savages.append(Thread(cook, shared))
+        threads.append(Thread(savage, i, shared))
+    for i in range(cooks):
+        threads.append(Thread(cook, i, shared))
+    for t in threads:
+        t.join()
 
 
 N = 3
-M = 20
+cooks = 5
+M = 10
 main()
