@@ -1,16 +1,33 @@
+"""
+Authors: Bc. Simon Youssef
+         Mgr. Ing. Matúš Jókay, PhD.
+Coppyright 2022 All Rights Reserved.
+Implementation of the problem of Savages and Cooks.
+"""
+
 from time import sleep
 from random import randint
 from fei.ppds import Thread, print, Mutex, Semaphore
 
 
 class SimpleBarrier(object):
+    """"The SimpleBarrier class."""
+
     def __init__(self, number):
+        """
+        The constructor for SimpleBarrier class.
+
+        Parameter:
+            number (int): The number of threads.
+        """
         self.number = number
         self.count = 0
         self.mutex = Mutex()
         self.barrier = Semaphore(0)
 
     def wait(self, each=None, last=None):
+        """"The SimpleBarrier function with Semaphore."""
+
         self.mutex.lock()
         self.count += 1
         if each:
@@ -25,7 +42,16 @@ class SimpleBarrier(object):
 
 
 class Shared(object):
+    """This is a shared class for multiple threads."""
+
     def __init__(self, servings):
+        """
+        The constructor for Shared class.
+
+        Parameter:
+        servings (int): The number of servings.
+        """
+
         self.servings = servings
         self.count = 0
         self.mutex = Mutex()
@@ -41,11 +67,27 @@ class Shared(object):
 
 
 def eat(savage_id):
+    """"
+    The simple function to simulate eating.
+
+    Parameter:
+        savage_id (int): The ID of savage.
+    """
+
     print(f'🐗 savage {savage_id}: eating')
     sleep(randint(50, 200) / 100)
 
 
 def savage(savage_id, shared):
+    """
+    The function simulates waiting for others savages and start eating and
+    notifing cooks when pot is empty.
+
+    Parameters:
+        savage_id (int): The ID of savage.
+        shared (object): The shared object.
+    """
+
     sleep(randint(1, 100)/100)
     while True:
         shared.b1.wait()
@@ -64,6 +106,15 @@ def savage(savage_id, shared):
 
 
 def cook(cook_id, shared):
+    """
+   The function simulates waiting for others cooks and start cooking,
+   then notifing savage when pot is full.
+
+   Parameters:
+       cook_id (int): The ID of cook.
+       shared (object): The shared object.
+   """
+
     while True:
         shared.c1.wait()
         shared.c2.wait()
@@ -81,6 +132,8 @@ def cook(cook_id, shared):
 
 
 def main():
+    """This function is for program initialization."""
+
     shared = Shared(0)
     threads = []
     for savage_id in range(number_savages):
