@@ -116,14 +116,14 @@ def cook(cook_id, shared):
    """
 
     while True:
+        shared.empty_pot.wait()
         shared.c1.wait()
         shared.c2.wait()
-        shared.empty_pot.wait()
         shared.cmutext.lock()
         shared.count += 1
         print(f'‍🍳 cook {cook_id}: cooking')
+        sleep(randint(50, 200) / 100)
         if shared.count == number_cooks:
-            sleep(randint(50, 200) / 100)
             shared.count = 0
             print(f'🍳 cook {cook_id}: servings -> pot')
             shared.servings += number_servings
