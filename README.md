@@ -9,6 +9,10 @@ and if the pot was empty, one of them would wake up the cook, who would cook the
 the implementation of multiple cooks had to be resolved. When the savage finds that the pot is empty he wakes up all the cooks who together
 cook. After it is cooked, just 1 cook tells the waiting savage that it is cooked.
 
+In the task of smokers, we have modified the code so that the agent does not wait for feedback and the dealers keep supplying raw materials and the number of raw materials increases.
+By implementing this assignment in this way, the problem is that the raw materials are constantly being delivered to the table and all 3 raw materials are on the table.
+Then there is the problem of which smoker will continue, or it may happen that one smoker goes around and does not get to the next one.
+
 # Implementation savages
 This task is an extension of the Producers and Consumers problem of tracking stock status. In the first part it was necessary to
 all the savages to wait for each other before dinner and go to eat at once, we solved this problem using 2 simple barriers.
