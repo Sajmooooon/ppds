@@ -9,9 +9,28 @@ and if the pot was empty, one of them would wake up the cook, who would cook the
 the implementation of multiple cooks had to be resolved. When the savage finds that the pot is empty he wakes up all the cooks who together
 cook. After it is cooked, just 1 cook tells the waiting savage that it is cooked.
 
-In the task of smokers, we have modified the code so that the agent does not wait for feedback and the dealers keep supplying raw materials and the number of raw materials increases.
+# Implementation smokers
+In the task of smokers, we have modified the code so that the agent does not wait for signal and the dealers keep supplying raw materials and the number of raw materials increases.
 By implementing this assignment in this way, the problem is that the raw materials are constantly being delivered to the table and all 3 raw materials are on the table.
-Then there is the problem of which smoker will continue, or it may happen that one smoker goes around and does not get to the next one.
+Then there is the problem of which smoker will continue, or it may happen that one smoker goes around and does not get to the next one as you can see in code below.
+To avoid favouring one smoker over another, we would need to randomly select which of the available smokers would go. This will therefore prevent favouritism.
+
+```
+def pusher_match(shared):
+    while True:
+        shared.match.wait()
+        shared.mutex.lock()
+        if shared.isTobacco:
+            shared.isTobacco -= 1
+            shared.pusherPaper.signal()
+        elif shared.isPaper:
+            shared.isPaper -= 1
+            shared.pusherTobacco.signal()
+        else:
+            shared.isMatch += 1
+        shared.mutex.unlock()
+```
+
 
 # Implementation savages
 This task is an extension of the Producers and Consumers problem of tracking stock status. In the first part it was necessary to
