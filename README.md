@@ -18,3 +18,82 @@ so that he can sit in the chair where he will cut his hair. The client is then c
 the customer sends a signal that he is cut and waits for a signal from the barber. When he receives the signal, the customer leaves, thus the number of customers is decremented in the locked mutex
 and waits for the hair to grow back, which is simulated by sleep in the groving_hair function. After the hair grows back, he comes to the barbershop again.
 
+# Pseudocode
+```
+FUNCTION get_hair_cut(customer_id):
+    PRINT("Customer %d: Getting my hair haircut.",customer_id)
+    sleep(0.1 s)
+ENDFUNCTION
+
+
+FUNCTION cut_hair():
+    PRINT("Barber: Cutting hair.")
+    sleep(0.1 s)
+ENDFUNCTION
+
+
+FUNCTION balk(customer_id):
+    PRINT("Customer %d: The barber shop is full,
+          I will come next time.",customer_id)
+    sleep(0.2 to 0.3 s)
+ENDFUNCTION
+
+
+FUNCTION groving_hair(customer_id):
+    PRINT("Customer %d: waiting for my hair to grow.",customer_id)
+    sleep(0.3 to 0.5 s)
+ENDFUNCTION
+
+
+FUNCTION customer(customer_id):
+    WHILE True:
+        mutex.lock()
+        IF customers is equal N
+            mutex.unlock()
+            balk(customer_id)
+        ELSE
+            customers += 1
+            PRINT("Customer %d: Waiting for haircutting.",customer_id)
+            mutex.unlock()
+
+            customer.signal()
+            barber.wait()
+
+            get_hair_cut(customer_id)
+            customer_done.signal()
+            barber_done.wait()
+
+            mutex.lock()
+            customers -= 1
+            mutex.unlock()
+            groving_hair(customer_id)
+    ENDWHILE
+
+
+FUNCTION barber():
+    WHILE True:
+        customer.wait()
+        barber.signal()
+
+        cut_hair()
+
+        customer_done.wait()
+        barber_done.signal()
+    ENDWHILE
+ENDFUNCTION
+
+
+FUNCTION main():
+    customers = 3
+    threads = []
+    FOR customer_id=0 in customers-1:
+        threads.append(Thread(customer, customer_id))
+    ENDFOR
+    threads.append(Thread(barber,))
+    FOR t=0 to threads.length-1:
+        t.join()
+    ENDFOR
+ENDFUNCTION
+
+
+```
