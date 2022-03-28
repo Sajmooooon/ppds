@@ -48,7 +48,7 @@ ENDFUNCTION
 FUNCTION customer(customer_id):
     WHILE True:
         mutex.lock()
-        IF customers is equal N
+        IF customers is equal shop_capacity
             mutex.unlock()
             balk(customer_id)
         ELSE
