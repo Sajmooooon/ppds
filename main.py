@@ -22,7 +22,7 @@ class Shared(object):
         number (int): The capacity of barber shop.
         """
 
-        self.N = number
+        self.shop_capacity = number
         self.customers = 0
         self.mutex = Mutex()
         self.customer = Semaphore(0)
@@ -87,7 +87,7 @@ def customer(customer_id, shared):
 
     while True:
         shared.mutex.lock()
-        if shared.customers == shared.N:
+        if shared.customers == shared.shop_capacity:
             shared.mutex.unlock()
             balk(customer_id)
         else:
@@ -127,8 +127,8 @@ def barber(shared):
 def main():
     """This function is for program initialization."""
 
-    capacity = 2
-    customers = 3
+    capacity = 3
+    customers = 6
     shared = Shared(capacity)
     threads = []
     for customer_id in range(customers):
