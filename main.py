@@ -22,6 +22,8 @@ class Task:
         self.task = task
 
     def run(self):
+        """The function to run coroutine."""
+
         return self.task.send(None)
 
 
