@@ -7,6 +7,8 @@ Implementation of the Scheduler.
 
 
 class Task:
+    """The Task class."""
+
     def __init__(self, task, task_id):
         """
         The constructor for Task class.
@@ -24,6 +26,8 @@ class Task:
 
 
 class Scheduler:
+    """The Scheduler class."""
+
     def __init__(self):
         """The constructor for Scheduler class."""
 
