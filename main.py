@@ -1,19 +1,19 @@
 class Task:
-    def __init__(self, target, target_id):
-        self.id = target_id
-        self.target = target
+    def __init__(self, task, task_id):
+        self.id = task_id
+        self.task = task
 
     def run(self):
-        return self.target.send(None)
+        return self.task.send(None)
 
 
 class Scheduler:
     def __init__(self):
         self.tasks = []
 
-    def add_task(self, target, target_id):
-        task = Task(target, target_id)
-        self.tasks.append(task)
+    def add_task(self, task, task_id):
+        new_task = Task(task, task_id)
+        self.tasks.append(new_task)
 
     def schedule(self):
         self.tasks.sort(key=sort_id)
