@@ -1,8 +1,23 @@
+"""
+Authors: Bc. Simon Youssef
+         Mgr. Ing. Matúš Jókay, PhD.
+Coppyright 2022 All Rights Reserved.
+Implementation of the simple async ping function.
+"""
+
+
 import datetime
 import asyncio
 
 
 async def ping(url):
+    """
+    Function to ping given url and print if was found or not.
+
+    Parameter:
+        url: URL link of website.
+    """
+
     response = await asyncio.create_subprocess_exec(
                             "ping", url,
                             stdout=asyncio.subprocess.PIPE,
@@ -19,6 +34,8 @@ async def ping(url):
 
 
 async def main():
+    """This function is for program initialization."""
+
     start = datetime.datetime.now()
     await asyncio.gather(ping("google.com"),
                          ping("facebook.com"),
