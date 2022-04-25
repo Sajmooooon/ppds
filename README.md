@@ -8,13 +8,13 @@ which makes the image yellow. In the gamma function I divide each parameter from
 
 In the images below you can see the original image on the left and on the right you can see the image after editing with the yellow_filter function.
 <p align="left">
-    <img src="https://raw.githubusercontent.com/Sajmooooon/ppds/09/bg.png?token=GHSAT0AAAAAABSB25NJ2H3O2JAJ76KSFUKYYTGS2IQ" height="213" width="320"/>
-    <img src="https://raw.githubusercontent.com/Sajmooooon/ppds/09/bg_out.png?token=GHSAT0AAAAAABSB25NJI6JEYLQ4BJSJQ3ZUYTGS2QA" height="213" width="320"/>
+    <img src="https://i.imgur.com/UH8uPi9.png" height="213" width="320"/>
+    <img src="https://i.imgur.com/0kSaFPW.png" height="213" width="320"/>
 </p>
 
 In the images below you can see the original image on the left and on the right you can see the image after editing with the gamma function.
 <p align="left">
-    <img src="https://raw.githubusercontent.com/Sajmooooon/ppds/09/shrek.png?token=GHSAT0AAAAAABSB25NINFAHPBSJYNUMN5XQYTGS3ZA" height="250" width="235"/>
-    <img src="https://raw.githubusercontent.com/Sajmooooon/ppds/09/shrek_out.png?token=GHSAT0AAAAAABSB25NIHWMTJ5MMG5G2UZVKYTGS4BQ" height="250" width="235"/>
+    <img src="https://i.imgur.com/Lhrpe6r.png" height="250" width="235"/>
+    <img src="https://i.imgur.com/VrvowyG.png" height="250" width="235"/>
 </p>
 
