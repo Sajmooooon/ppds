@@ -8,3 +8,9 @@ Then, just like in the previous assignment, I calculated blocks per grid, with t
 I then appended the results to the gpu_out array and displayed the image for each part using imshow.
 This allowed me to achieve asynchronous execution and thus the image was edited faster.
 
+# Measurements
+With yellow_filter function without streams, the image was edited
+0.32 seconds and around 0.19 - 0.20 seconds after using streams. For the gamma function without streams, the image was adjusted for 0.58 seconds and after adding streams around 0.19-0.20 seconds.
+I performed the tests on the bg.png image.
+
+
