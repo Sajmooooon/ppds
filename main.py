@@ -12,6 +12,7 @@ from matplotlib import image
 from matplotlib import pyplot
 from numba import cuda
 from time import perf_counter
+import numpy as np
 import math
 
 
@@ -102,6 +103,9 @@ def init(arr_len, file_name, type):
     gpu_out = []
     streams = []
 
+    start_events = []
+    end_events = []
+
     threadsperblock = (32, 32)
 
     image1 = image.imread(file_name)
@@ -110,6 +114,8 @@ def init(arr_len, file_name, type):
 
     for _ in range(arr_len):
         streams.append(cuda.stream())
+        start_events.append(cuda.event(timing=True))
+        end_events.append(cuda.event(timing=True))
 
     t_start = perf_counter()
 
@@ -126,16 +132,29 @@ def init(arr_len, file_name, type):
 
     for j in range(arr_len):
         blockspergrid = get_blockspergrid(data_gpu[j], threadsperblock)
+        start_events[j].record(streams[j])
         if type:
             gamma[blockspergrid, threadsperblock, streams[j]](data_gpu[j])
         else:
             yellow_filter[blockspergrid, threadsperblock, streams[j]](data_gpu[j])
 
     for i in range(arr_len):
+        end_events[i].record(streams[i])
         gpu_out.append(data_gpu[i].copy_to_host(stream=streams[i]))
 
     t_end = perf_counter()
+
+    kernel_times = []
+
+    for k in range(arr_len):
+        kernel_times.append(
+            cuda.event_elapsed_time(start_events[k], end_events[k]))
+
     print(f'Total time: {t_end - t_start:.2f} s')
+    print(f'Mean kernel duration (milliseconds): '
+          f'{ np.mean(kernel_times):.2f} ')
+    print(f'Mean kernel standard deviation (milliseconds): '
+          f'{ np.std(kernel_times):.2f}')
 
     show_image(gpu_out)
 
